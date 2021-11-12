@@ -1,20 +1,15 @@
 <resources>
     <string name="app_name">Trust</string>
-    <!-- Settings Activity Title -->
-    <string name="title_activity_settings">Settings</string>
-
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="xposed_description">抓包插件</string>
+    <string name="preference_header">配置选择</string>
+    <string name="title_package_select">选择目标应用</string>
+    <string name="title_proxy_enable">是否开启抓包功能</string>
+    <string name="proxy_summary_off">已关闭抓包功能</string>
+    <string name="proxy_summary_on">已打开抓包功能</string>
+    <string name="web_debug_summary_off">Web 不可调试</string>
+    <string name="web_debug_summary_on">Web 可调试</string>
+    <string name="title_web_debug">Web 内容调试设置</string>
+    <string name="js_alert_summary_off">JS Alert 关闭</string>
+    <string name="js_alert_summary_on">JS Alert 打开</string>
+    <string name="title_js_alert">JS Alert 配置</string>
 </resources>
