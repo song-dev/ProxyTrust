@@ -1,35 +1,51 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:title="@string/preference_header">
-
         <Preference
             app:iconSpaceReserved="false"
             app:key="package_select"
             app:title="@string/title_package_select" />
-
+        <EditTextPreference
+            android:key="package_name"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/title_package_name"
+            app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
-            app:key="proxy"
-            app:summaryOff="@string/proxy_summary_off"
-            app:summaryOn="@string/proxy_summary_on"
-            app:title="@string/title_proxy_enable" />
-
+            app:key="certificate"
+            app:summaryOff="@string/certificate_summary_off"
+            app:summaryOn="@string/certificate_summary_on"
+            app:title="@string/certificate_proxy_enable" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="protocol"
+            android:summaryOff="@string/protocol_summary_off"
+            android:summaryOn="@string/protocol_summary_on"
+            android:title="@string/title_protocol"
+            app:iconSpaceReserved="false" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="webView"
+            android:summaryOff="@string/webView_summary_off"
+            android:summaryOn="@string/webView_summary_on"
+            android:title="@string/title_web_view"
+            app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
             app:key="web_debug"
             app:summaryOff="@string/web_debug_summary_off"
             app:summaryOn="@string/web_debug_summary_on"
             app:title="@string/title_web_debug" />
-
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
             app:key="js_alert"
             app:summaryOff="@string/js_alert_summary_off"
             app:summaryOn="@string/js_alert_summary_on"
             app:title="@string/title_js_alert" />
-
     </PreferenceCategory>
 
 </PreferenceScreen>

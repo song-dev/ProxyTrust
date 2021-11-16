@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreference
 import org.json.JSONObject
 
 class SettingsActivity : AppCompatActivity() {
@@ -45,13 +44,17 @@ class SettingsActivity : AppCompatActivity() {
         ) {
             if (sharedPreferences != null) {
                 val edit = sharedPreferences.edit()
-                val targetPackageName = sharedPreferences.getString("package_select", null)
-                val proxy = sharedPreferences.getBoolean("proxy", false)
+                val targetPackageName = sharedPreferences.getString("package_name", null)
+                val certificate = sharedPreferences.getBoolean("certificate", false)
+                val protocol = sharedPreferences.getBoolean("protocol", false)
+                val webView = sharedPreferences.getBoolean("webView", false)
                 val webDebug = sharedPreferences.getBoolean("web_debug", false)
                 val jsAlert = sharedPreferences.getBoolean("js_alert", false)
                 val jsonObject = JSONObject()
                 jsonObject.put("targetPackageName", targetPackageName)
-                jsonObject.put("proxy", proxy)
+                jsonObject.put("certificate", certificate)
+                jsonObject.put("protocol", protocol)
+                jsonObject.put("webView", webView)
                 jsonObject.put("webDebug", webDebug)
                 jsonObject.put("jsAlert", jsAlert)
                 edit.putString("target", jsonObject.toString())
