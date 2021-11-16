@@ -7,11 +7,11 @@ import de.robv.android.xposed.XposedBridge
  */
 object XposedLogger {
 
-    fun log(msg: String) {
+    fun log(msg: String?) {
         XposedBridge.log("${Constants.TAG}==>$msg")
     }
 
-    fun log(tag: String, msg: String) {
+    fun log(tag: String, msg: String?) {
         XposedBridge.log("$tag==>$msg")
     }
 

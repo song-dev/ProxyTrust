@@ -2,8 +2,10 @@ package com.song.trust.plugin
 
 import android.app.Application
 import android.content.Context
+import com.song.trust.BuildConfig
 import com.song.trust.preferences.ProviderPreferences
 import com.song.trust.utils.Constants
+import com.song.trust.utils.XposedLogger
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
@@ -15,7 +17,7 @@ import org.json.JSONObject
 class DeviceHook {
 
     private val listFilter =
-        listOf("android", "me.weishu.exp", "de.robv.android.xposed.installer")
+        listOf("android", "me.weishu.exp", "de.robv.android.xposed.installer", BuildConfig.APPLICATION_ID)
 
     fun handleLoadPackage(loadPackageParam: LoadPackageParam) {
         if (!listFilter.contains(loadPackageParam.packageName)) {
@@ -31,6 +33,7 @@ class DeviceHook {
                             Constants.PREFName
                         )
                         val value: String? = providerPreferences.getString("target", null)
+                        XposedLogger.log("Target JSON: $value")
                         if (value != null && value.isNotBlank()) {
                             val jsonObject = JSONObject(value)
                             if (loadPackageParam.packageName.equals(jsonObject.optString("targetPackageName"))) {

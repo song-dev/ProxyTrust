@@ -51,7 +51,7 @@ class SettingsActivity : AppCompatActivity() {
                 val webDebug = sharedPreferences.getBoolean("web_debug", false)
                 val jsAlert = sharedPreferences.getBoolean("js_alert", false)
                 val jsonObject = JSONObject()
-                jsonObject.put("targetPackageName", targetPackageName)
+                jsonObject.put("targetPackageName", targetPackageName?.trim())
                 jsonObject.put("certificate", certificate)
                 jsonObject.put("protocol", protocol)
                 jsonObject.put("webView", webView)

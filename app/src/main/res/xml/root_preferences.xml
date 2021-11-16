@@ -10,10 +10,9 @@
             app:title="@string/title_package_select" />
         <EditTextPreference
             android:key="package_name"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
             android:title="@string/title_package_name"
-            app:iconSpaceReserved="false" />
+            app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true" />
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
             app:key="certificate"
