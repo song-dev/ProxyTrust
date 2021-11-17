@@ -60,9 +60,9 @@ class SettingsActivity : AppCompatActivity() {
                 edit.putString("target", jsonObject.toString())
                 edit.apply()
 //                if (key == "package_select") {
-                    val preference: Preference? =
-                        this.findPreference("package_select")
-                    preference?.summary = "test"
+//                    val preference: Preference? =
+//                        this.findPreference("package_select")
+//                    preference?.summary = "test"
 //                }
 
 
