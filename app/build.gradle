@@ -1,29 +1,58 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
 }
 
+def PRODUCT_NAME = "trust-"
+def DATE = new SimpleDateFormat('yyyyMMdd').format(new Date())
+
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    buildToolsVersion BUILD_TOOLS_VERSION
 
     defaultConfig {
         applicationId "com.song.trust"
-        minSdkVersion 16
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            keyAlias 'geetest'
+            keyPassword 'geetest'
+            storeFile file('../geetest_android_public.jks')
+            storePassword 'geetest'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFileName
+            if (outputFile != null && outputFile.endsWith('.apk')) {
+                if ('debug' == variant.buildType.name) {
+                    output.outputFileName = "${PRODUCT_NAME}${defaultConfig.versionName}-${DATE}" + "_debug.apk"
+                } else if ('release' == variant.buildType.name){
+                    output.outputFileName = "${PRODUCT_NAME}${defaultConfig.versionName}-${DATE}" + ".apk"
+                }
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

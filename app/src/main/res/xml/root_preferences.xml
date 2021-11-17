@@ -7,6 +7,7 @@
         <Preference
             app:iconSpaceReserved="false"
             app:key="package_select"
+            app:summary="功能待完善"
             app:title="@string/title_package_select" />
         <EditTextPreference
             android:key="package_name"
@@ -45,6 +46,17 @@
             app:summaryOff="@string/js_alert_summary_off"
             app:summaryOn="@string/js_alert_summary_on"
             app:title="@string/title_js_alert" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/hook_method_header">
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="json"
+            app:summaryOff="@string/json_summary_off"
+            app:summaryOn="@string/json_summary_on"
+            app:title="@string/json_hook_enable" />
     </PreferenceCategory>
 
 </PreferenceScreen>

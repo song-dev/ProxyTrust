@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Trust</string>
     <string name="xposed_description">抓包插件</string>
-    <string name="preference_header">设置选择</string>
+    <string name="preference_header">调试应用设置</string>
     <string name="title_package_select">选择目标应用</string>
     <string name="certificate_proxy_enable">证书抓包设置</string>
     <string name="certificate_summary_off">已关闭证书抓包功能</string>
@@ -19,4 +19,8 @@
     <string name="title_web_view">WebView 抓包配置</string>
     <string name="webView_summary_on">已开启 WebView 抓包</string>
     <string name="webView_summary_off">已关闭 WebView 抓包</string>
+    <string name="hook_method_header">Hook 函数设置(待完善)</string>
+    <string name="json_hook_enable">JSON Hook</string>
+    <string name="json_summary_off">JSON Hook 关闭</string>
+    <string name="json_summary_on">JSON Hook 开启</string>
 </resources>
