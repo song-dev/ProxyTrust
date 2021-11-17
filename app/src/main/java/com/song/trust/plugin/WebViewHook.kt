@@ -21,31 +21,6 @@ class WebViewHook {
 
     fun hook(loadPackageParam: XC_LoadPackage.LoadPackageParam) {
 
-        //        /* WebView Hooks */
-//        /* frameworks/base/core/java/android/webkit/WebViewClient.java */
-//        /* public void onReceivedSslError(Webview, SslErrorHandler, SslError) */
-//        Log.d(TAG, "Hooking WebViewClient.onReceivedSslError(WebView, SslErrorHandler, SslError) for: " + currentPackageName);
-//        findAndHookMethod("android.webkit.WebViewClient", lpparam.classLoader, "onReceivedSslError",
-//                WebView.class, SslErrorHandler.class, SslError.class, new XC_MethodReplacement() {
-//                    @Override
-//                    protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-//                        ((SslErrorHandler) param.args[1]).proceed();
-//                        return null;
-//                    }
-//                });
-//
-//        /* frameworks/base/core/java/android/webkit/WebViewClient.java */
-//        /* public void onReceivedError(WebView, int, String, String) */
-//        Log.d(TAG, "Hooking WebViewClient.onReceivedSslError(WebView, int, string, string) for: " + currentPackageName);
-//
-//        findAndHookMethod("android.webkit.WebViewClient", lpparam.classLoader, "onReceivedError",
-//                WebView.class, int.class, String.class, String.class, new XC_MethodReplacement() {
-//                    @Override
-//                    protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-//                        return null;
-//                    }
-//                });
-
         /**
          * frameworks/base/core/java/android/webkit/WebViewClient.java
          * public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error)
@@ -61,6 +36,7 @@ class WebViewHook {
                 @Throws(Throwable::class)
                 override fun replaceHookedMethod(param: MethodHookParam): Any? {
                     (param.args[1] as SslErrorHandler).proceed()
+                    XposedLogger.log("WebViewClient.onReceivedSslError(WebView, SslErrorHandler, SslError) hooked for: ${loadPackageParam.packageName}")
                     return null
                 }
             })
@@ -80,6 +56,7 @@ class WebViewHook {
             object : XC_MethodReplacement() {
                 @Throws(Throwable::class)
                 override fun replaceHookedMethod(param: MethodHookParam): Any? {
+                    XposedLogger.log("Hooking WebViewClient.onReceivedSslError(WebView, int, string, string) hooked for: ${loadPackageParam.packageName}")
                     return null
                 }
             })
@@ -99,6 +76,7 @@ class WebViewHook {
                 object : XC_MethodReplacement() {
                     @Throws(Throwable::class)
                     override fun replaceHookedMethod(param: MethodHookParam): Any? {
+                        XposedLogger.log("Hooking WebViewClient.onReceivedSslError(WebView, int, string, string) hooked for: ${loadPackageParam.packageName}")
                         return null
                     }
                 })
