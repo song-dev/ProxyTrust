@@ -1,20 +1,26 @@
 <resources>
     <string name="app_name">Trust</string>
-    <!-- Settings Activity Title -->
-    <string name="title_activity_settings">Settings</string>
-
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="xposed_description">抓包插件</string>
+    <string name="preference_header">调试应用设置</string>
+    <string name="title_package_select">选择目标应用</string>
+    <string name="certificate_proxy_enable">证书抓包设置</string>
+    <string name="certificate_summary_off">已关闭证书抓包功能</string>
+    <string name="certificate_summary_on">已开启证书抓包功能</string>
+    <string name="web_debug_summary_off">Web 不可调试</string>
+    <string name="web_debug_summary_on">Web 可调试</string>
+    <string name="title_web_debug">Web 内容调试设置</string>
+    <string name="js_alert_summary_off">JS Alert 关闭</string>
+    <string name="js_alert_summary_on">JS Alert 开启</string>
+    <string name="title_js_alert">JS Alert 设置</string>
+    <string name="title_package_name">设置目标应用包名</string>
+    <string name="title_protocol">协议抓包设置</string>
+    <string name="protocol_summary_on">已开启协议抓包</string>
+    <string name="protocol_summary_off">已关闭协议抓包</string>
+    <string name="title_web_view">WebView 抓包配置</string>
+    <string name="webView_summary_on">已开启 WebView 抓包</string>
+    <string name="webView_summary_off">已关闭 WebView 抓包</string>
+    <string name="hook_method_header">Hook 函数设置(待完善)</string>
+    <string name="json_hook_enable">JSON Hook</string>
+    <string name="json_summary_off">JSON Hook 关闭</string>
+    <string name="json_summary_on">JSON Hook 开启</string>
 </resources>
