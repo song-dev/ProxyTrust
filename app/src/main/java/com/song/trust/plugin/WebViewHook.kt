@@ -45,7 +45,7 @@ class WebViewHook {
          * frameworks/base/core/java/android/webkit/WebViewClient.java
          * public void onReceivedError(WebView, int, String, String)
          */
-        XposedLogger.log("Hooking WebViewClient.onReceivedSslError(WebView, int, string, string) for: ${loadPackageParam.packageName}")
+        XposedLogger.log("Hooking WebViewClient.onReceivedError(WebView, int, string, string) for: ${loadPackageParam.packageName}")
         XposedHelpers.findAndHookMethod("android.webkit.WebViewClient",
             loadPackageParam.classLoader,
             "onReceivedError",
@@ -56,7 +56,7 @@ class WebViewHook {
             object : XC_MethodReplacement() {
                 @Throws(Throwable::class)
                 override fun replaceHookedMethod(param: MethodHookParam): Any? {
-                    XposedLogger.log("Hooking WebViewClient.onReceivedSslError(WebView, int, string, string) hooked for: ${loadPackageParam.packageName}")
+                    XposedLogger.log("Hooking WebViewClient.onReceivedError(WebView, int, string, string) hooked for: ${loadPackageParam.packageName}")
                     return null
                 }
             })
@@ -66,7 +66,7 @@ class WebViewHook {
          * public void onReceivedError(WebView, WebResourceRequest, WebResourceError)
          */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            XposedLogger.log("Hooking WebViewClient.onReceivedSslError(WebView, int, string, string) for: ${loadPackageParam.packageName}")
+            XposedLogger.log("Hooking WebViewClient.onReceivedError(WebView, int, string, string) for: ${loadPackageParam.packageName}")
             XposedHelpers.findAndHookMethod("android.webkit.WebViewClient",
                 loadPackageParam.classLoader,
                 "onReceivedError",
@@ -76,7 +76,7 @@ class WebViewHook {
                 object : XC_MethodReplacement() {
                     @Throws(Throwable::class)
                     override fun replaceHookedMethod(param: MethodHookParam): Any? {
-                        XposedLogger.log("Hooking WebViewClient.onReceivedSslError(WebView, int, string, string) hooked for: ${loadPackageParam.packageName}")
+                        XposedLogger.log("Hooking WebViewClient.onReceivedError(WebView, int, string, string) hooked for: ${loadPackageParam.packageName}")
                         return null
                     }
                 })

@@ -1,14 +1,9 @@
 package com.song.trust.plugin
 
-import android.net.http.SslError
 import android.webkit.JsResult
-import android.webkit.SslErrorHandler
-import android.webkit.WebChromeClient
 import android.webkit.WebView
 import com.song.trust.utils.XposedLogger
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodReplacement
-import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
@@ -23,16 +18,18 @@ class JSAlertHook {
 //            WebChromeClient::class.java,
 //            "onJsAlert", ValueMethodHook(false)
 //        )
+
 //        XposedBridge.hookAllMethods(
 //            WebChromeClient::class.java,
 //            "onJsAlert",
 //            object : XC_MethodHook() {
 //                override fun afterHookedMethod(param: MethodHookParam?) {
 //                    param?.result = false
-//                    XposedLogger.log("WebChromeClient.onJsAlert result: false")
+//                    XposedLogger.log("Hooking WebChromeClient.onJsAlert(WebView, string, string, JsResult) hooked for: ${loadPackageParam.packageName}")
 //                }
 //            }
 //        )
+        XposedLogger.log("Hooking WebChromeClient.onJsAlert(WebView, string, string, JsResult) for: ${loadPackageParam.packageName}")
         XposedHelpers.findAndHookMethod("android.webkit.WebChromeClient",
             loadPackageParam.classLoader,
             "onJsAlert",
@@ -42,12 +39,12 @@ class JSAlertHook {
             JsResult::class.java,
             object : XC_MethodReplacement() {
                 override fun replaceHookedMethod(param: MethodHookParam?): Any {
-                    XposedLogger.log("WebChromeClient.onJsAlert result: false")
+                    XposedLogger.log("Hooking WebChromeClient.onJsAlert(WebView, string, string, JsResult) hooked for: ${loadPackageParam.packageName}")
                     return false
                 }
-
             }
         )
+
     }
 
 }
