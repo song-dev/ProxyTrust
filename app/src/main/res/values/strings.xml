@@ -16,11 +16,14 @@
     <string name="title_protocol">协议抓包设置</string>
     <string name="protocol_summary_on">已开启协议抓包</string>
     <string name="protocol_summary_off">已关闭协议抓包</string>
-    <string name="title_web_view">WebView 抓包配置</string>
+    <string name="title_web_view">WebView 抓包设置</string>
     <string name="webView_summary_on">已开启 WebView 抓包</string>
     <string name="webView_summary_off">已关闭 WebView 抓包</string>
     <string name="hook_method_header">Hook 函数设置(待完善)</string>
     <string name="json_hook_enable">JSON Hook</string>
     <string name="json_summary_off">JSON Hook 关闭</string>
     <string name="json_summary_on">JSON Hook 开启</string>
+    <string name="okhttp_summary_off">已关闭 OKHttp 抓包</string>
+    <string name="okhttp_summary_on">已开启 OKHttp 抓包</string>
+    <string name="title_okhttp">OKHttp 抓包设置</string>
 </resources>

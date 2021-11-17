@@ -73,16 +73,18 @@ class DeviceHook {
                             if (loadPackageParam.packageName.equals(jsonObject.optString("targetPackageName"))) {
                                 if (jsonObject.optBoolean("certificate")) {
                                     CertificateHook().handleLoadPackage(loadPackageParam)
-                                    OKHttpHook().hook(
-                                        loadPackageParam.classLoader,
-                                        loadPackageParam.packageName
-                                    )
                                 }
                                 if (jsonObject.optBoolean("webDebug")) {
                                     WebDebugHook().hook()
                                 }
                                 if (jsonObject.optBoolean("protocol")) {
                                     ProtocolHook().hook(loadPackageParam)
+                                }
+                                if (jsonObject.optBoolean("okhttp")) {
+                                    OKHttpHook().hook(
+                                        loadPackageParam.classLoader,
+                                        loadPackageParam.packageName
+                                    )
                                 }
                                 if (jsonObject.optBoolean("webView")) {
                                     WebViewHook().hook(loadPackageParam)
