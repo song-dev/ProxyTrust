@@ -92,6 +92,9 @@ class DeviceHook {
                                 if (jsonObject.optBoolean("jsAlert")) {
                                     JSAlertHook().hook(loadPackageParam)
                                 }
+                                if (jsonObject.optBoolean("json")) {
+                                    JSONHook().hook(loadPackageParam)
+                                }
                             }
                         }
                     }
