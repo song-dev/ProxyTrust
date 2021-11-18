@@ -29,7 +29,7 @@ class JSAlertHook {
 //                }
 //            }
 //        )
-        XposedLogger.log("Hooking WebChromeClient.onJsAlert(WebView, string, string, JsResult) for: ${loadPackageParam.packageName}")
+        XposedLogger.log("WebChromeClient.onJsAlert(WebView, string, string, JsResult) for: ${loadPackageParam.packageName}")
         XposedHelpers.findAndHookMethod("android.webkit.WebChromeClient",
             loadPackageParam.classLoader,
             "onJsAlert",
@@ -39,7 +39,7 @@ class JSAlertHook {
             JsResult::class.java,
             object : XC_MethodReplacement() {
                 override fun replaceHookedMethod(param: MethodHookParam?): Any {
-                    XposedLogger.log("Hooking WebChromeClient.onJsAlert(WebView, string, string, JsResult) hooked for: ${loadPackageParam.packageName}")
+                    XposedLogger.log("WebChromeClient.onJsAlert(WebView, string, string, JsResult) hooked for: ${loadPackageParam.packageName}")
                     return false
                 }
             }

@@ -64,6 +64,12 @@
             app:summaryOff="@string/json_summary_off"
             app:summaryOn="@string/json_summary_on"
             app:title="@string/json_hook_enable" />
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="crypto"
+            app:summaryOff="@string/crypto_summary_off"
+            app:summaryOn="@string/crypto_summary_on"
+            app:title="@string/crypto_enable" />
     </PreferenceCategory>
 
 </PreferenceScreen>

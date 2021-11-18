@@ -52,6 +52,7 @@ class SettingsActivity : AppCompatActivity() {
                 val webDebug = sharedPreferences.getBoolean("web_debug", false)
                 val jsAlert = sharedPreferences.getBoolean("js_alert", false)
                 val json = sharedPreferences.getBoolean("json", false)
+                val crypto = sharedPreferences.getBoolean("crypto", false)
                 val jsonObject = JSONObject()
                 jsonObject.put("targetPackageName", targetPackageName?.trim())
                 jsonObject.put("certificate", certificate)
@@ -61,6 +62,7 @@ class SettingsActivity : AppCompatActivity() {
                 jsonObject.put("webDebug", webDebug)
                 jsonObject.put("jsAlert", jsAlert)
                 jsonObject.put("json", json)
+                jsonObject.put("crypto", crypto)
                 edit.putString("target", jsonObject.toString())
                 edit.apply()
 //                if (key == "package_select") {

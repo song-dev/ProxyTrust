@@ -26,4 +26,7 @@
     <string name="okhttp_summary_off">已关闭 OKHttp 抓包</string>
     <string name="okhttp_summary_on">已开启 OKHttp 抓包</string>
     <string name="title_okhttp">OKHttp 抓包设置</string>
+    <string name="crypto_summary_off">加解密 Hook 关闭</string>
+    <string name="crypto_summary_on">加解密 Hook 开启</string>
+    <string name="crypto_enable">加解密 Hook</string>
 </resources>
