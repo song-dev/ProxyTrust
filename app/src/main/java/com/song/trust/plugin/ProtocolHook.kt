@@ -56,22 +56,26 @@ class ProtocolHook {
             }
         })
         // WebView 链接地址改为 http
-        XposedHelpers.findAndHookMethod(
-            "okhttp3.Request\$Builder",
-            loadPackageParam.classLoader,
-            "url",
-            String::class.java,
-            object : XC_MethodHook() {
-                override fun beforeHookedMethod(param: MethodHookParam?) {
-                    val urlStr: String = param?.args?.get(0) as String
-                    XposedLogger.log("okhttp3.Request.Builder.url Parameter: $urlStr")
-                    if (urlStr.startsWith("https")) {
-                        param.args[0] = urlStr.replaceFirst("https", "http")
+        try {
+            loadPackageParam.classLoader.loadClass("okhttp3.Request\$Builder")
+            XposedHelpers.findAndHookMethod(
+                "okhttp3.Request\$Builder",
+                loadPackageParam.classLoader,
+                "url",
+                String::class.java,
+                object : XC_MethodHook() {
+                    override fun beforeHookedMethod(param: MethodHookParam?) {
+                        val urlStr: String = param?.args?.get(0) as String
+                        XposedLogger.log("okhttp3.Request.Builder.url Parameter: $urlStr")
+                        if (urlStr.startsWith("https")) {
+                            param.args[0] = urlStr.replaceFirst("https", "http")
+                        }
                     }
                 }
-            }
-        )
-
+            )
+        } catch (e: ClassNotFoundException) {
+            XposedLogger.log("ProtocolHook Request.Builder Exception${e.message}")
+        }
     }
 
 }
