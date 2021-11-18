@@ -29,6 +29,13 @@
             app:iconSpaceReserved="false" />
         <SwitchPreference
             android:defaultValue="false"
+            android:key="okhttp"
+            android:summaryOff="@string/okhttp_summary_off"
+            android:summaryOn="@string/okhttp_summary_on"
+            android:title="@string/title_okhttp"
+            app:iconSpaceReserved="false" />
+        <SwitchPreference
+            android:defaultValue="false"
             android:key="webView"
             android:summaryOff="@string/webView_summary_off"
             android:summaryOn="@string/webView_summary_on"
@@ -57,6 +64,12 @@
             app:summaryOff="@string/json_summary_off"
             app:summaryOn="@string/json_summary_on"
             app:title="@string/json_hook_enable" />
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="crypto"
+            app:summaryOff="@string/crypto_summary_off"
+            app:summaryOn="@string/crypto_summary_on"
+            app:title="@string/crypto_enable" />
     </PreferenceCategory>
 
 </PreferenceScreen>

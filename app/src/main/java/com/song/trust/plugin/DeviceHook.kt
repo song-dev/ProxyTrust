@@ -27,40 +27,18 @@ class DeviceHook {
 
     fun handleLoadPackage(loadPackageParam: LoadPackageParam) {
         if (!listFilter.contains(loadPackageParam.packageName)) {
-//            XposedHelpers.findAndHookMethod("android.app.Application",
-//                loadPackageParam.classLoader,
-//                "attach",
-//                Context::class.java,
-//                object : XC_MethodHook() {
-//                    override fun afterHookedMethod(param: MethodHookParam?) {
-//                        val providerPreferences = ProviderPreferences(
-//                            param?.thisObject as Context,
-//                            Constants.AUTHORITIES,
-//                            Constants.PREFName
-//                        )
-//                        val value: String? = providerPreferences.getString("target", null)
-//                        XposedLogger.log("Target JSON(attach): $value")
-//                        if (value != null && value.isNotBlank()) {
-//                            val jsonObject = JSONObject(value)
-//                            if (loadPackageParam.packageName.equals(jsonObject.optString("targetPackageName"))) {
-//                                if (jsonObject.optBoolean("certificate")) {
-//                                    val context = param.args?.get(0) as Context
-//                                    OKHttpHook().hook(
-//                                        context.classLoader,
-//                                        loadPackageParam.packageName
-//                                    )
-//                                }
-//                            }
-//                        }
-//                    }
-//                })
+
+//            if (loadPackageParam.packageName.equals("com.geetest.gateauth")) {
+//                CryptoHook().hook(loadPackageParam)
+//                JSONHook().hook(loadPackageParam)
+//                ProtocolHook().hook(loadPackageParam)
+//            }
 
             XposedBridge.hookAllMethods(
                 Application::class.java,
                 "onCreate",
                 object : XC_MethodHook() {
-                    override fun afterHookedMethod(param: MethodHookParam) {
-                        super.afterHookedMethod(param)
+                    override fun beforeHookedMethod(param: MethodHookParam) {
                         val providerPreferences = ProviderPreferences(
                             param.thisObject as Context,
                             Constants.AUTHORITIES,
@@ -73,10 +51,6 @@ class DeviceHook {
                             if (loadPackageParam.packageName.equals(jsonObject.optString("targetPackageName"))) {
                                 if (jsonObject.optBoolean("certificate")) {
                                     CertificateHook().handleLoadPackage(loadPackageParam)
-                                    OKHttpHook().hook(
-                                        loadPackageParam.classLoader,
-                                        loadPackageParam.packageName
-                                    )
                                 }
                                 if (jsonObject.optBoolean("webDebug")) {
                                     WebDebugHook().hook()
@@ -84,11 +58,23 @@ class DeviceHook {
                                 if (jsonObject.optBoolean("protocol")) {
                                     ProtocolHook().hook(loadPackageParam)
                                 }
+                                if (jsonObject.optBoolean("okhttp")) {
+                                    OKHttpHook().hook(
+                                        loadPackageParam.classLoader,
+                                        loadPackageParam.packageName
+                                    )
+                                }
                                 if (jsonObject.optBoolean("webView")) {
                                     WebViewHook().hook(loadPackageParam)
                                 }
                                 if (jsonObject.optBoolean("jsAlert")) {
                                     JSAlertHook().hook(loadPackageParam)
+                                }
+                                if (jsonObject.optBoolean("json")) {
+                                    JSONHook().hook(loadPackageParam)
+                                }
+                                if (jsonObject.optBoolean("crypto")) {
+                                    CryptoHook().hook(loadPackageParam)
                                 }
                             }
                         }

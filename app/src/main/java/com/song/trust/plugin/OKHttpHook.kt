@@ -2,8 +2,11 @@ package com.song.trust.plugin
 
 import android.annotation.SuppressLint
 import com.song.trust.utils.XposedLogger
+import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodReplacement
+import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
+import okhttp3.OkHttpClient
 import java.security.KeyManagementException
 import java.security.NoSuchAlgorithmException
 import java.security.cert.CertificateException
@@ -15,160 +18,12 @@ import javax.net.ssl.*
  */
 class OKHttpHook {
 
-    //        // Multi-dex support: https://github.com/rovo89/XposedBridge/issues/30#issuecomment-68486449
-//        findAndHookMethod("android.app.Application",
-//                loadPackageParam.classLoader,
-//                "attach",
-//                Context.class,
-//                new XC_MethodHook() {
-//                    @Override
-//                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-//                        // Hook OkHttp or third party libraries.
-//                        Context context = (Context) param.args[0];
-//                        processOkHttp(context.getClassLoader());
-////                        processXUtils(context.getClassLoader());
-//                    }
-//                }
-//        );
-
-    //    private void processXUtils(ClassLoader classLoader) {
-//        Log.d(TAG, "Hooking org.xutils.http.RequestParams.setSslSocketFactory(SSLSocketFactory) (3) for: " + currentPackageName);
-//        try {
-//            classLoader.loadClass("org.xutils.http.RequestParams");
-//            findAndHookMethod("org.xutils.http.RequestParams", classLoader, "setSslSocketFactory", javax.net.ssl.SSLSocketFactory.class, new XC_MethodHook() {
-//                @Override
-//                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//                    super.beforeHookedMethod(param);
-//                    param.args[0] = getEmptySSLFactory();
-//                }
-//            });
-//            findAndHookMethod("org.xutils.http.RequestParams", classLoader, "setHostnameVerifier", HostnameVerifier.class, new XC_MethodHook() {
-//                @Override
-//                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//                    super.beforeHookedMethod(param);
-//                    param.args[0] = new ImSureItsLegitHostnameVerifier();
-//                }
-//            });
-//        } catch (Exception e) {
-//            Log.d(TAG, "org.xutils.http.RequestParams not found in " + currentPackageName + "-- not hooking");
-//        }
-//    }
-
-    //    public void processOkHttp(ClassLoader classLoader, String currentPackageName) {
-//        /* hooking OKHTTP by SQUAREUP */
-//        /* com/squareup/okhttp/CertificatePinner.java available online @ https://github.com/square/okhttp/blob/master/okhttp/src/main/java/com/squareup/okhttp/CertificatePinner.java */
-//        /* public void check(String hostname, List<Certificate> peerCertificates) throws SSLPeerUnverifiedException{}*/
-//        /* Either returns true or a exception so blanket return true */
-//        /* Tested against version 2.5 */
-//        Log.d(TAG, "Hooking com.squareup.okhttp.CertificatePinner.check(String,List) (2.5) for: " + currentPackageName);
-//
-//        try {
-//            classLoader.loadClass("com.squareup.okhttp.CertificatePinner");
-//            findAndHookMethod("com.squareup.okhttp.CertificatePinner",
-//                    classLoader,
-//                    "check",
-//                    String.class,
-//                    List.class,
-//                    new XC_MethodReplacement() {
-//                        @Override
-//                        protected Object replaceHookedMethod(MethodHookParam methodHookParam) throws Throwable {
-//                            return true;
-//                        }
-//                    });
-//        } catch (ClassNotFoundException e) {
-//            // pass
-//            Log.d(TAG, "OKHTTP 2.5 not found in " + currentPackageName + "-- not hooking");
-//        }
-//
-//        //https://github.com/square/okhttp/blob/parent-3.0.1/okhttp/src/main/java/okhttp3/CertificatePinner.java#L144
-//        Log.d(TAG, "Hooking okhttp3.CertificatePinner.check(String,List) (3.x) for: " + currentPackageName);
-//
-//        try {
-//            classLoader.loadClass("okhttp3.CertificatePinner");
-//            findAndHookMethod("okhttp3.CertificatePinner",
-//                    classLoader,
-//                    "check",
-//                    String.class,
-//                    List.class,
-//                    new XC_MethodReplacement() {
-//                        @Override
-//                        protected Object replaceHookedMethod(MethodHookParam methodHookParam) throws Throwable {
-//                            return null;
-//                        }
-//                    });
-//        } catch (ClassNotFoundException e) {
-//            Log.d(TAG, "OKHTTP 3.x not found in " + currentPackageName + " -- not hooking");
-//            // pass
-//        }
-//
-//        //https://github.com/square/okhttp/blob/parent-3.0.1/okhttp/src/main/java/okhttp3/internal/tls/OkHostnameVerifier.java
-//        try {
-//            classLoader.loadClass("okhttp3.internal.tls.OkHostnameVerifier");
-//            findAndHookMethod("okhttp3.internal.tls.OkHostnameVerifier",
-//                    classLoader,
-//                    "verify",
-//                    String.class,
-//                    javax.net.ssl.SSLSession.class,
-//                    new XC_MethodReplacement() {
-//                        @Override
-//                        protected Object replaceHookedMethod(MethodHookParam methodHookParam) throws Throwable {
-//                            return true;
-//                        }
-//                    });
-//        } catch (ClassNotFoundException e) {
-//            Log.d(TAG, "OKHTTP 3.x not found in " + currentPackageName + " -- not hooking OkHostnameVerifier.verify(String, SSLSession)");
-//            // pass
-//        }
-//
-//        //https://github.com/square/okhttp/blob/parent-3.0.1/okhttp/src/main/java/okhttp3/internal/tls/OkHostnameVerifier.java
-//        try {
-//            classLoader.loadClass("okhttp3.internal.tls.OkHostnameVerifier");
-//            findAndHookMethod("okhttp3.internal.tls.OkHostnameVerifier",
-//                    classLoader,
-//                    "verify",
-//                    String.class,
-//                    java.security.cert.X509Certificate.class,
-//                    new XC_MethodReplacement() {
-//                        @Override
-//                        protected Object replaceHookedMethod(MethodHookParam methodHookParam) throws Throwable {
-//                            return true;
-//                        }
-//                    });
-//        } catch (ClassNotFoundException e) {
-//            Log.d(TAG, "OKHTTP 3.x not found in " + currentPackageName + " -- not hooking OkHostnameVerifier.verify(String, X509)(");
-//            // pass
-//        }
-//
-//        //https://github.com/square/okhttp/blob/okhttp_4.2.x/okhttp/src/main/java/okhttp3/CertificatePinner.kt
-//        Log.d(TAG, "Hooking okhttp3.CertificatePinner.check(String,List) (4.2.0+) for: " + currentPackageName);
-//
-//        try {
-//            classLoader.loadClass("okhttp3.CertificatePinner");
-//            findAndHookMethod("okhttp3.CertificatePinner",
-//                    classLoader,
-//                    "check$okhttp",
-//                    String.class,
-//                    "kotlin.jvm.functions.Function0",
-//                    new XC_MethodReplacement() {
-//                        @Override
-//                        protected Object replaceHookedMethod(MethodHookParam methodHookParam) throws Throwable {
-//                            return null;
-//                        }
-//                    });
-//        } catch (ClassNotFoundException e) {
-//            Log.d(TAG, "OKHTTP 4.2.0+ not found in " + currentPackageName + " -- not hooking");
-//            // pass
-//        }
-//
-//    }
-
     fun hook(classLoader: ClassLoader, packageName: String) {
         /* com/squareup/okhttp/CertificatePinner.java available online @ https://github.com/square/okhttp/blob/master/okhttp/src/main/java/com/squareup/okhttp/CertificatePinner.java */
         /* public void check(String hostname, List<Certificate> peerCertificates) throws SSLPeerUnverifiedException{}*/
         /* Either returns true or a exception so blanket return true */
         /* Tested against version 2.5 */
         try {
-            XposedLogger.log("Hooking com.squareup.okhttp.CertificatePinner.check(String, List) (2.5) for: $packageName")
             classLoader.loadClass("com.squareup.okhttp.CertificatePinner")
             XposedHelpers.findAndHookMethod("com.squareup.okhttp.CertificatePinner",
                 classLoader,
@@ -178,6 +33,7 @@ class OKHttpHook {
                 object : XC_MethodReplacement() {
                     @Throws(Throwable::class)
                     override fun replaceHookedMethod(methodHookParam: MethodHookParam): Any {
+                        XposedLogger.log("com.squareup.okhttp.CertificatePinner.check(String, List) (2.5) for: $packageName")
                         return true
                     }
                 })
@@ -187,7 +43,6 @@ class OKHttpHook {
 
         // https://github.com/square/okhttp/blob/parent-3.0.1/okhttp/src/main/java/okhttp3/CertificatePinner.java#L144
         try {
-            XposedLogger.log("Hooking okhttp3.CertificatePinner.check(String, List) (3.x) for: $packageName")
             classLoader.loadClass("okhttp3.CertificatePinner")
             XposedHelpers.findAndHookMethod("okhttp3.CertificatePinner",
                 classLoader,
@@ -197,6 +52,7 @@ class OKHttpHook {
                 object : XC_MethodReplacement() {
                     @Throws(Throwable::class)
                     override fun replaceHookedMethod(methodHookParam: MethodHookParam): Any? {
+                        XposedLogger.log("okhttp3.CertificatePinner.check(String, List) (3.x) for: $packageName")
                         return null
                     }
                 })
@@ -206,7 +62,6 @@ class OKHttpHook {
 
         // https://github.com/square/okhttp/blob/parent-3.0.1/okhttp/src/main/java/okhttp3/internal/tls/OkHostnameVerifier.java
         try {
-            XposedLogger.log("Hooking okhttp3.internal.tls.OkHostnameVerifier.verify(String, SSLSession) (3.x) for: $packageName")
             classLoader.loadClass("okhttp3.internal.tls.OkHostnameVerifier")
             XposedHelpers.findAndHookMethod("okhttp3.internal.tls.OkHostnameVerifier",
                 classLoader,
@@ -216,6 +71,7 @@ class OKHttpHook {
                 object : XC_MethodReplacement() {
                     @Throws(Throwable::class)
                     override fun replaceHookedMethod(methodHookParam: MethodHookParam): Any {
+                        XposedLogger.log("okhttp3.internal.tls.OkHostnameVerifier.verify(String, SSLSession) (3.x) for: $packageName")
                         return true
                     }
                 })
@@ -225,7 +81,6 @@ class OKHttpHook {
 
         // https://github.com/square/okhttp/blob/parent-3.0.1/okhttp/src/main/java/okhttp3/internal/tls/OkHostnameVerifier.java
         try {
-            XposedLogger.log("Hooking okhttp3.internal.tls.OkHostnameVerifier.verify(String, X509Certificate) (3.x) for: $packageName")
             classLoader.loadClass("okhttp3.internal.tls.OkHostnameVerifier")
             XposedHelpers.findAndHookMethod("okhttp3.internal.tls.OkHostnameVerifier",
                 classLoader,
@@ -235,6 +90,22 @@ class OKHttpHook {
                 object : XC_MethodReplacement() {
                     @Throws(Throwable::class)
                     override fun replaceHookedMethod(methodHookParam: MethodHookParam): Any {
+                        XposedLogger.log("okhttp3.internal.tls.OkHostnameVerifier.verify(String, X509Certificate) (3.x) for: $packageName")
+                        return true
+                    }
+                })
+        } catch (e: ClassNotFoundException) {
+            XposedLogger.log("OKHTTP 3.x not found in $packageName: not hooking")
+        }
+
+        try {
+            val loadClass = classLoader.loadClass("okhttp3.internal.tls.OkHostnameVerifier")
+            XposedBridge.hookAllMethods(loadClass,
+                "verify",
+                object : XC_MethodReplacement() {
+                    @Throws(Throwable::class)
+                    override fun replaceHookedMethod(methodHookParam: MethodHookParam): Any {
+                        XposedLogger.log("okhttp3.internal.tls.OkHostnameVerifier.verify() (3.x) for: $packageName")
                         return true
                     }
                 })
@@ -244,7 +115,6 @@ class OKHttpHook {
 
         // https://github.com/square/okhttp/blob/okhttp_4.2.x/okhttp/src/main/java/okhttp3/CertificatePinner.kt
         try {
-            XposedLogger.log("Hooking okhttp3.CertificatePinner.check(String,List) (4.2.0+) for: $packageName")
             classLoader.loadClass("okhttp3.CertificatePinner")
             XposedHelpers.findAndHookMethod("okhttp3.CertificatePinner",
                 classLoader,
@@ -254,12 +124,53 @@ class OKHttpHook {
                 object : XC_MethodReplacement() {
                     @Throws(Throwable::class)
                     override fun replaceHookedMethod(methodHookParam: MethodHookParam): Any? {
+                        XposedLogger.log("okhttp3.CertificatePinner.check(String,List) (4.2.0+) for: $packageName")
                         return null
                     }
                 })
         } catch (e: ClassNotFoundException) {
             XposedLogger.log("OKHTTP 4.2.0+ not found in $packageName: not hooking")
         }
+
+        try {
+            XposedBridge.hookAllMethods(
+                OkHttpClient::class.java,
+                "newBuilder",
+                object : XC_MethodHook() {
+                    @Throws(Throwable::class)
+                    override fun beforeHookedMethod(methodHookParam: MethodHookParam) {
+                        XposedLogger.log("okhttp3.OkHttpClient.Builder.build (*) for: $packageName")
+                        XposedHelpers.callMethod(
+                            methodHookParam.result,
+                            "hostnameVerifier", ImSureItsLegitHostnameVerifier()
+                        )
+                        XposedHelpers.callMethod(
+                            methodHookParam.result,
+                            "sslSocketFactory", getEmptySSLFactory()
+                        )
+                    }
+                })
+
+            XposedHelpers.findAndHookMethod(
+                OkHttpClient.Builder::class.java, "build",
+                object : XC_MethodHook() {
+                    @Throws(Throwable::class)
+                    override fun beforeHookedMethod(methodHookParam: MethodHookParam) {
+                        XposedLogger.log("okhttp3.OkHttpClient.Builder.build (*) for: $packageName")
+                        XposedHelpers.callMethod(
+                            methodHookParam.thisObject,
+                            "hostnameVerifier", ImSureItsLegitHostnameVerifier()
+                        )
+                        XposedHelpers.callMethod(
+                            methodHookParam.thisObject,
+                            "sslSocketFactory", getEmptySSLFactory()
+                        )
+                    }
+                })
+        } catch (e: Exception) {
+            XposedLogger.log("OKHTTP *+ not found in $packageName: not hooking")
+        }
+
     }
 
     private fun getEmptySSLFactory(): SSLSocketFactory? {
