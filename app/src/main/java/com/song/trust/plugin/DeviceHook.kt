@@ -38,7 +38,8 @@ class DeviceHook {
                 Application::class.java,
                 "onCreate",
                 object : XC_MethodHook() {
-                    override fun beforeHookedMethod(param: MethodHookParam) {
+                    override fun afterHookedMethod(param: MethodHookParam) {
+                        super.afterHookedMethod(param)
                         val providerPreferences = ProviderPreferences(
                             param.thisObject as Context,
                             Constants.AUTHORITIES,
