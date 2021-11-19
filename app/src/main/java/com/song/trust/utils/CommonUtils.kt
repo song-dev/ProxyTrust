@@ -1,5 +1,6 @@
 package com.song.trust.utils
 
+import android.content.Context
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.nio.charset.Charset
@@ -51,6 +52,16 @@ object CommonUtils {
             XposedLogger.log("CommonUtils.unzip: ${e.message}")
         }
         return null
+    }
+
+    fun isPkgInstalled(context: Context?, name: String?): Boolean {
+        return try {
+            context?.packageManager?.getPackageInfo(name!!, 0)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
     }
 
 }
