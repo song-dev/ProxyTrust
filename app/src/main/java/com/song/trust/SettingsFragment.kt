@@ -1,5 +1,6 @@
 package com.song.trust
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import org.json.JSONObject
 
 /**
@@ -20,6 +22,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private var requestDataLauncher: ActivityResultLauncher<Intent>? = null
     private var preference: Preference? = null
 
+    @SuppressLint("CommitPrefEdits")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requestDataLauncher =
@@ -28,6 +31,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     val data = result.data?.getParcelableExtra<ApplicationBean>("app")
                     if (data != null) {
                         preference?.summary = data.packageName
+                        val defaultSharedPreferences =
+                            PreferenceManager.getDefaultSharedPreferences(context)
+                        val edit = defaultSharedPreferences.edit()
+                        edit.putString("package_select", data.packageName)
+                        edit.apply()
+                        onSharedPreferenceChanged(defaultSharedPreferences, "package_select")
                     }
                 }
             }
@@ -35,11 +44,16 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        preference = findPreference<Preference>("package_select")
+        preference = findPreference("package_select")
         preference?.setOnPreferenceClickListener {
             val intent = Intent(this.context, AppListActivity::class.java)
             requestDataLauncher?.launch(intent)
             return@setOnPreferenceClickListener true
+        }
+        val name =
+            PreferenceManager.getDefaultSharedPreferences(context).getString("package_select", null)
+        if (name?.isNotBlank() == true) {
+            preference?.summary = name
         }
     }
 
@@ -56,6 +70,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (sharedPreferences != null) {
             val edit = sharedPreferences.edit()
+            val packageSelected = sharedPreferences.getString("package_select", null)
             val targetPackageName = sharedPreferences.getString("package_name", null)
             val certificate = sharedPreferences.getBoolean("certificate", false)
             val protocol = sharedPreferences.getBoolean("protocol", false)
@@ -66,7 +81,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
             val json = sharedPreferences.getBoolean("json", false)
             val crypto = sharedPreferences.getBoolean("crypto", false)
             val jsonObject = JSONObject()
-            jsonObject.put("targetPackageName", targetPackageName?.trim())
+            // 目标包名 EditTextPreference 配置优先级最高
+            if (targetPackageName?.isNotBlank() == true) {
+                jsonObject.put("targetPackageName", targetPackageName.trim())
+            } else if (packageSelected?.isNotBlank() == true) {
+                jsonObject.put("targetPackageName", packageSelected.trim())
+            }
             jsonObject.put("certificate", certificate)
             jsonObject.put("protocol", protocol)
             jsonObject.put("okhttp", okhttp)

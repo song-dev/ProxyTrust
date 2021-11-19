@@ -7,7 +7,7 @@
         <Preference
             app:iconSpaceReserved="false"
             app:key="package_select"
-            app:summary="功能待完善"
+            app:summary="@string/package_select_summary"
             app:title="@string/title_package_select" />
         <EditTextPreference
             android:key="package_name"
@@ -15,6 +15,7 @@
             app:iconSpaceReserved="false"
             app:useSimpleSummaryProvider="true" />
         <SwitchPreferenceCompat
+            app:defaultValue="false"
             app:iconSpaceReserved="false"
             app:key="certificate"
             app:summaryOff="@string/certificate_summary_off"
@@ -42,12 +43,14 @@
             android:title="@string/title_web_view"
             app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
+            app:defaultValue="false"
             app:iconSpaceReserved="false"
             app:key="web_debug"
             app:summaryOff="@string/web_debug_summary_off"
             app:summaryOn="@string/web_debug_summary_on"
             app:title="@string/title_web_debug" />
         <SwitchPreferenceCompat
+            app:defaultValue="false"
             app:iconSpaceReserved="false"
             app:key="js_alert"
             app:summaryOff="@string/js_alert_summary_off"
@@ -59,12 +62,14 @@
         app:iconSpaceReserved="false"
         app:title="@string/hook_method_header">
         <SwitchPreferenceCompat
+            app:defaultValue="false"
             app:iconSpaceReserved="false"
             app:key="json"
             app:summaryOff="@string/json_summary_off"
             app:summaryOn="@string/json_summary_on"
             app:title="@string/json_hook_enable" />
         <SwitchPreferenceCompat
+            app:defaultValue="false"
             app:iconSpaceReserved="false"
             app:key="crypto"
             app:summaryOff="@string/crypto_summary_off"

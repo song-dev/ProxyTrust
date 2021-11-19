@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Trust</string>
+    <string name="app_list_label">选择应用</string>
     <string name="xposed_description">抓包插件</string>
     <string name="preference_header">调试应用设置</string>
     <string name="title_package_select">选择目标应用</string>
@@ -12,7 +13,7 @@
     <string name="js_alert_summary_off">JS Alert 关闭</string>
     <string name="js_alert_summary_on">JS Alert 开启</string>
     <string name="title_js_alert">JS Alert 设置</string>
-    <string name="title_package_name">设置目标应用包名</string>
+    <string name="title_package_name">设置目标应用包名(优先级最高)</string>
     <string name="title_protocol">协议抓包设置</string>
     <string name="protocol_summary_on">已开启协议抓包</string>
     <string name="protocol_summary_off">已关闭协议抓包</string>
@@ -29,4 +30,5 @@
     <string name="crypto_summary_off">加解密 Hook 关闭</string>
     <string name="crypto_summary_on">加解密 Hook 开启</string>
     <string name="crypto_enable">加解密 Hook</string>
+    <string name="package_select_summary">未设置</string>
 </resources>
