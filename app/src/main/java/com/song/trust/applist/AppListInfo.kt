@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.text.TextUtils
 import androidx.preference.PreferenceManager
+import com.song.trust.utils.CommonUtils
 import java.util.*
 
 /**
@@ -38,7 +39,9 @@ object AppListInfo {
                     }
                 }
                 list.sort()
-                if (!TextUtils.isEmpty(packageName)) {
+                if (!TextUtils.isEmpty(packageName)
+                    && CommonUtils.isPkgInstalled(context, packageName)
+                ) {
                     list.add(0, ApplicationBean().setTitle("已选应用"))
                     list.add(2, ApplicationBean().setTitle("待选应用"))
                 } else {

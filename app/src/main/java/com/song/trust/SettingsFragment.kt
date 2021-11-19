@@ -13,6 +13,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.song.trust.applist.AppListActivity
 import com.song.trust.applist.ApplicationBean
+import com.song.trust.utils.CommonUtils
 import org.json.JSONObject
 
 /**
@@ -55,9 +56,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
         val name =
             PreferenceManager.getDefaultSharedPreferences(context).getString("package_select", null)
         if (name?.isNotBlank() == true) {
-            val label = context?.packageManager?.getApplicationInfo(name, 0)
-                ?.loadLabel(context?.packageManager!!)
-            preference?.summary = "$label($name)"
+            if (CommonUtils.isPkgInstalled(context, name)) {
+                val label = context?.packageManager?.getApplicationInfo(name, 0)
+                    ?.loadLabel(context?.packageManager!!)
+                preference?.summary = "$label($name)"
+            } else {
+                preference?.summary = "$name: 已被卸载，请重新选择"
+            }
         }
     }
 
@@ -88,7 +93,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
             // 目标包名 EditTextPreference 配置优先级最高
             if (targetPackageName?.isNotBlank() == true) {
                 jsonObject.put("targetPackageName", targetPackageName.trim())
-            } else if (packageSelected?.isNotBlank() == true) {
+            } else if (packageSelected?.isNotBlank() == true
+                && CommonUtils.isPkgInstalled(context, packageSelected)
+            ) {
                 jsonObject.put("targetPackageName", packageSelected.trim())
             }
             jsonObject.put("certificate", certificate)

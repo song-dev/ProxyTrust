@@ -3,6 +3,7 @@ import java.text.SimpleDateFormat
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 def PRODUCT_NAME = "trust-"
@@ -84,5 +85,5 @@ dependencies {
     compileOnly 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.qmuiteam:qmui:2.0.0-alpha10'
     implementation 'com.jakewharton:butterknife:10.2.3'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
+    kapt 'com.jakewharton:butterknife-compiler:10.2.3'
 }
