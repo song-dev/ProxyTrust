@@ -1,4 +1,4 @@
-package com.song.trust
+package com.song.trust.applist
 
 import android.annotation.SuppressLint
 import android.content.Context

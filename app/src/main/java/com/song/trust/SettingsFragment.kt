@@ -11,6 +11,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import com.song.trust.applist.AppListActivity
+import com.song.trust.applist.ApplicationBean
 import org.json.JSONObject
 
 /**

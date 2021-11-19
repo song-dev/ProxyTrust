@@ -1,4 +1,4 @@
-package com.song.trust;
+package com.song.trust.applist;
 
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;

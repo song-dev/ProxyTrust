@@ -1,8 +1,9 @@
-package com.song.trust
+package com.song.trust.applist
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.song.trust.R
 
 /**
  * Created by chensongsong on 2021/11/19.

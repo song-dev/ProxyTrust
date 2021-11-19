@@ -1,4 +1,4 @@
-package com.song.trust;
+package com.song.trust.applist;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.song.trust.R;
+import com.song.trust.SettingsActivity;
 
 import java.util.ArrayList;
 import java.util.List;

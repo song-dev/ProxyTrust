@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AppListActivity"
+            android:name=".applist.AppListActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:label="@string/app_list_label" />
 
