@@ -4,6 +4,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Created by chensongsong on 2021/11/19.
  */
@@ -67,6 +69,7 @@ public class ApplicationBean implements Parcelable, Comparable<ApplicationBean> 
         }
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "ApplicationBean{" +

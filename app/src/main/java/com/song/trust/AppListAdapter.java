@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,14 +27,15 @@ import static android.app.Activity.RESULT_OK;
 public class AppListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context context;
-    private List<ApplicationBean> data;
+    private final List<ApplicationBean> data = new ArrayList<>();
 
     public AppListAdapter(Context context) {
         this.context = context;
     }
 
-    public void updateData(List<ApplicationBean> data) {
-        this.data = data;
+    public void updateData(List<ApplicationBean> list) {
+        data.clear();
+        data.addAll(list);
         notifyDataSetChanged();
     }
 
