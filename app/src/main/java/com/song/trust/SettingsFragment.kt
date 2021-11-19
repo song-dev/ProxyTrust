@@ -30,7 +30,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 if (result.resultCode == RESULT_OK) {
                     val data = result.data?.getParcelableExtra<ApplicationBean>("app")
                     if (data != null) {
-                        preference?.summary = data.packageName
+                        preference?.summary = "${data.name}(${data.packageName})"
                         val defaultSharedPreferences =
                             PreferenceManager.getDefaultSharedPreferences(context)
                         val edit = defaultSharedPreferences.edit()
@@ -53,7 +53,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
         val name =
             PreferenceManager.getDefaultSharedPreferences(context).getString("package_select", null)
         if (name?.isNotBlank() == true) {
-            preference?.summary = name
+            val label = context?.packageManager?.getApplicationInfo(name, 0)
+                ?.loadLabel(context?.packageManager!!)
+            preference?.summary = "$label($name)"
         }
     }
 
