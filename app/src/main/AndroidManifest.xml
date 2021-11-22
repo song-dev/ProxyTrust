@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.song.trust">
 
+<!--    <queries>-->
+<!--        <provider-->
+<!--            android:authorities="com.song.trust.provider.XposedPreferencesProvider"-->
+<!--            android:exported="true" />-->
+<!--        <package android:name="com.song.trust" />-->
+<!--    </queries>-->
+
     <application
         android:name=".APP"
         android:allowBackup="false"
@@ -15,8 +22,8 @@
         <activity
             android:name=".SettingsActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
-            android:launchMode="singleTask"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,6 +39,7 @@
             android:name=".provider.XposedPreferencesProvider"
             android:authorities="com.song.trust.provider.XposedPreferencesProvider"
             android:exported="true"
+            android:grantUriPermissions="true"
             tools:ignore="ExportedContentProvider" />
 
         <meta-data
