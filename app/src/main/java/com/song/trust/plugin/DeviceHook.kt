@@ -33,56 +33,66 @@ class DeviceHook {
 //                JSONHook().hook(loadPackageParam)
 //                ProtocolHook().hook(loadPackageParam)
 //            }
-
+            val instrumentationCls =
+                loadPackageParam.classLoader.loadClass("android.app.Instrumentation")
             XposedBridge.hookAllMethods(
-                Application::class.java,
-                "onCreate",
+                instrumentationCls,
+                "newApplication",
                 object : XC_MethodHook() {
-                    override fun afterHookedMethod(param: MethodHookParam) {
+                    override fun afterHookedMethod(param: MethodHookParam?) {
                         super.afterHookedMethod(param)
-                        val providerPreferences = ProviderPreferences(
-                            param.thisObject as Context,
-                            Constants.AUTHORITIES,
-                            Constants.PREFName
-                        )
-                        val value: String? = providerPreferences.getString("target", null)
-                        XposedLogger.log("Target JSON: $value")
-                        if (value != null && value.isNotBlank()) {
-                            val jsonObject = JSONObject(value)
-                            if (loadPackageParam.packageName.equals(jsonObject.optString("targetPackageName"))) {
-                                if (jsonObject.optBoolean("certificate")) {
-                                    CertificateHook().handleLoadPackage(loadPackageParam)
-                                }
-                                if (jsonObject.optBoolean("webDebug")) {
-                                    WebDebugHook().hook()
-                                }
-                                if (jsonObject.optBoolean("protocol")) {
-                                    ProtocolHook().hook(loadPackageParam)
-                                }
-                                if (jsonObject.optBoolean("okhttp")) {
-                                    OKHttpHook().hook(
-                                        loadPackageParam.classLoader,
-                                        loadPackageParam.packageName
-                                    )
-                                }
-                                if (jsonObject.optBoolean("webView")) {
-                                    WebViewHook().hook(loadPackageParam)
-                                }
-                                if (jsonObject.optBoolean("jsAlert")) {
-                                    JSAlertHook().hook(loadPackageParam)
-                                }
-                                if (jsonObject.optBoolean("json")) {
-                                    JSONHook().hook(loadPackageParam)
-                                }
-                                if (jsonObject.optBoolean("crypto")) {
-                                    CryptoHook().hook(loadPackageParam)
-                                }
-                            }
-                        }
+                        loadScript(loadPackageParam, param?.result as Context)
                     }
                 })
+//            XposedBridge.hookAllMethods(
+//                Application::class.java,
+//                "onCreate",
+//                object : XC_MethodHook() {
+//                    override fun afterHookedMethod(param: MethodHookParam) {
+//                        super.afterHookedMethod(param)
+//                        loadScript(loadPackageParam, param.thisObject as Context);
+//                    }
+//                })
 
         }
+    }
 
+    private fun loadScript(loadPackageParam: LoadPackageParam, context: Context) {
+        val providerPreferences =
+            ProviderPreferences(context, Constants.AUTHORITIES, Constants.PREFName)
+        val value: String? = providerPreferences.getString("target", null)
+        XposedLogger.log("Target JSON: $value")
+        if (value != null && value.isNotBlank()) {
+            val jsonObject = JSONObject(value)
+            if (loadPackageParam.packageName.equals(jsonObject.optString("targetPackageName"))) {
+                if (jsonObject.optBoolean("certificate")) {
+                    CertificateHook().handleLoadPackage(loadPackageParam)
+                }
+                if (jsonObject.optBoolean("webDebug")) {
+                    WebDebugHook().hook()
+                }
+                if (jsonObject.optBoolean("protocol")) {
+                    ProtocolHook().hook(loadPackageParam)
+                }
+                if (jsonObject.optBoolean("okhttp")) {
+                    OKHttpHook().hook(
+                        loadPackageParam.classLoader,
+                        loadPackageParam.packageName
+                    )
+                }
+                if (jsonObject.optBoolean("webView")) {
+                    WebViewHook().hook(loadPackageParam)
+                }
+                if (jsonObject.optBoolean("jsAlert")) {
+                    JSAlertHook().hook(loadPackageParam)
+                }
+                if (jsonObject.optBoolean("json")) {
+                    JSONHook().hook(loadPackageParam)
+                }
+                if (jsonObject.optBoolean("crypto")) {
+                    CryptoHook().hook(loadPackageParam)
+                }
+            }
+        }
     }
 }

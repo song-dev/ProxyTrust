@@ -24,7 +24,7 @@ class ProviderPreferences @JvmOverloads constructor(
     private val context: Context,
     authorities: String,
     prefName: String,
-    private val allow: Boolean = false
+    private val allow: Boolean = true
 ) : SharedPreferences {
     private val handler: Handler
     private val uri: Uri
