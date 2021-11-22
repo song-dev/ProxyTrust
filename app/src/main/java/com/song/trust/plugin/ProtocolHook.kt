@@ -47,8 +47,8 @@ class ProtocolHook {
         XposedBridge.hookAllConstructors(URL::class.java, object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam?) {
                 val protocol = param?.args?.get(0)
-                XposedLogger.log("URL Constructors Parameter: $protocol")
                 if (protocol is String) {
+                    XposedLogger.log("URL Constructors Parameter: $protocol")
                     if (protocol.startsWith("https")) {
                         param.args[0] = protocol.replaceFirst("https", "http")
                     }

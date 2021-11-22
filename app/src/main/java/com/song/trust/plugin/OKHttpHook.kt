@@ -130,6 +130,10 @@ class OKHttpHook {
                 })
         } catch (e: ClassNotFoundException) {
             XposedLogger.log("OKHTTP 4.2.0+ not found in $packageName: not hooking")
+        } catch (e: NoSuchMethodError) {
+            XposedLogger.log("OKHTTP 4.2.0+ not found in $packageName Function0: not hooking")
+        }catch (e:Throwable){
+            XposedLogger.log("OKHTTP 4.2.0+ ${e.message} for $packageName")
         }
 
         try {
