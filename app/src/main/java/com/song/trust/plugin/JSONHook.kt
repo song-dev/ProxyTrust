@@ -61,7 +61,7 @@ class JSONHook {
         XposedBridge.hookAllConstructors(JSONArray::class.java, object : XC_MethodHook() {
             override fun afterHookedMethod(param: MethodHookParam?) {
                 XposedLogger.log("====== ${loadPackageParam.packageName} JSONArray.Constructors args: ======")
-                XposedLogger.printLongString("${param?.thisObject as JSONArray}")
+                XposedLogger.printLongString("${param?.thisObject as JSONObject}")
             }
         })
 
