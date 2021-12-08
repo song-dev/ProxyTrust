@@ -1,20 +1,21 @@
 package com.song.trust.applist
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
+import com.song.trust.BR
 import com.song.trust.R
 import com.song.trust.SettingsActivity
+import com.song.trust.databinding.ItemAdapterAppListBinding
+import com.song.trust.databinding.ItemAdapterAppListTitleBinding
 import java.util.*
 
 /**
@@ -22,7 +23,10 @@ import java.util.*
  */
 class AppListAdapter(private val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     private val data: MutableList<ApplicationBean> = ArrayList()
+
+    @SuppressLint("NotifyDataSetChanged")
     fun updateData(list: List<ApplicationBean>) {
         data.clear()
         data.addAll(list)
@@ -43,25 +47,32 @@ class AppListAdapter(private val context: Context) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == 1) {
-            val root =
-                LayoutInflater.from(context).inflate(R.layout.item_adapter_applist, parent, false)
-            HomeHolder(root)
+            val itemAdapterAppListBinding = DataBindingUtil.inflate<ItemAdapterAppListBinding>(
+                LayoutInflater.from(context),
+                R.layout.item_adapter_applist,
+                parent,
+                false
+            )
+            HomeHolder(itemAdapterAppListBinding)
         } else {
-            val root =
-                LayoutInflater.from(context)
-                    .inflate(R.layout.item_adapter_applist_title, parent, false)
-            TitleHolder(root)
+            val itemAdapterAppListTitleBinding =
+                DataBindingUtil.inflate<ItemAdapterAppListTitleBinding>(
+                    LayoutInflater.from(context),
+                    R.layout.item_adapter_applist_title,
+                    parent,
+                    false
+                )
+            TitleHolder(itemAdapterAppListTitleBinding)
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val bean = data[position]
         if (TextUtils.isEmpty(bean.title)) {
-            val homeHolder = holder as HomeHolder
-            homeHolder.icon?.setImageDrawable(bean.icon)
-            homeHolder.nameTv?.text = bean.name
-            homeHolder.packageNameTv?.text = bean.packageName
-            homeHolder.root.setOnClickListener {
+            val homeHolder = holder as HomeHolder<*>
+            homeHolder.binding.setVariable(BR.viewModel, bean)
+            homeHolder.binding.executePendingBindings()
+            homeHolder.binding.root.setOnClickListener {
                 val intent = Intent()
                 intent.setClass(context, SettingsActivity::class.java)
                 intent.putExtra("app", bean)
@@ -69,36 +80,15 @@ class AppListAdapter(private val context: Context) :
                 context.finish()
             }
         } else {
-            val titleHolder = holder as TitleHolder
-            titleHolder.titleTv?.text = bean.title
+            val titleHolder = holder as TitleHolder<*>
+            titleHolder.binding.setVariable(BR.viewModel, bean)
+            titleHolder.binding.executePendingBindings()
         }
     }
 
-    internal class HomeHolder(var root: View) : RecyclerView.ViewHolder(root) {
-        @JvmField
-        @BindView(R.id.tv_name)
-        var nameTv: TextView? = null
+    internal class HomeHolder<T : ViewDataBinding>(val binding: T) :
+        RecyclerView.ViewHolder(binding.root)
 
-        @JvmField
-        @BindView(R.id.tv_package_name)
-        var packageNameTv: TextView? = null
-
-        @JvmField
-        @BindView(R.id.imageView)
-        var icon: ImageView? = null
-
-        init {
-            ButterKnife.bind(this, root)
-        }
-    }
-
-    internal class TitleHolder(view: View) : RecyclerView.ViewHolder(view) {
-        @JvmField
-        @BindView(R.id.tv_title)
-        var titleTv: TextView? = null
-
-        init {
-            ButterKnife.bind(this, view)
-        }
-    }
+    internal class TitleHolder<T : ViewDataBinding>(val binding: T) :
+        RecyclerView.ViewHolder(binding.root)
 }

@@ -30,8 +30,4 @@ class AppListActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
-    override fun finish() {
-        super.finish()
-    }
 }

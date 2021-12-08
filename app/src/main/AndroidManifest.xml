@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.song.trust">
 
-<!--    <queries>-->
-<!--        <provider-->
-<!--            android:authorities="com.song.trust.provider.XposedPreferencesProvider"-->
-<!--            android:exported="true" />-->
-<!--        <package android:name="com.song.trust" />-->
-<!--    </queries>-->
+    <!--    <queries>-->
+    <!--        <provider-->
+    <!--            android:authorities="com.song.trust.provider.XposedPreferencesProvider"-->
+    <!--            android:exported="true" />-->
+    <!--        <package android:name="com.song.trust" />-->
+    <!--    </queries>-->
 
     <application
         android:name=".APP"
@@ -38,6 +38,7 @@
         <provider
             android:name=".provider.XposedPreferencesProvider"
             android:authorities="com.song.trust.provider.XposedPreferencesProvider"
+            android:enabled="true"
             android:exported="true"
             android:grantUriPermissions="true"
             tools:ignore="ExportedContentProvider" />

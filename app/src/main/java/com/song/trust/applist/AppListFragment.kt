@@ -7,27 +7,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.song.trust.R
-import com.song.trust.applist.AppListInfo.getAppListInfo
-import com.song.trust.utils.ThreadPoolUtils
+import com.song.trust.databinding.FragmentAppListBinding
 
 /**
  * Created by chensongsong on 2021/11/19.
  */
 class AppListFragment : Fragment() {
+    private lateinit var dataBinding: FragmentAppListBinding
+    private val appListViewModel: AppListViewModel by activityViewModels()
     private lateinit var adapter: AppListAdapter
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val recyclerView: RecyclerView = root.findViewById(R.id.recycler_view)
-        swipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout)
+    ): View {
+        dataBinding = FragmentAppListBinding.inflate(inflater, container, false)
+        dataBinding.lifecycleOwner = this
+        dataBinding.viewModel = appListViewModel
+        val recyclerView: RecyclerView = dataBinding.recyclerView
+        swipeRefreshLayout = dataBinding.swipeRefreshLayout
         adapter = AppListAdapter(requireActivity())
         recyclerView.layoutManager =
             LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
@@ -38,8 +41,14 @@ class AppListFragment : Fragment() {
             )
         )
         recyclerView.adapter = adapter
+        appListViewModel.applicationList.observe(viewLifecycleOwner) {
+            mainHandler.post {
+                swipeRefreshLayout.isRefreshing = false
+                adapter.updateData(it)
+            }
+        }
         setSwipeRefreshLayout()
-        return root
+        return dataBinding.root
     }
 
     private fun setSwipeRefreshLayout() {
@@ -49,20 +58,12 @@ class AppListFragment : Fragment() {
             android.R.color.holo_orange_light,
             android.R.color.holo_green_light
         )
-        swipeRefreshLayout.setOnRefreshListener { refreshData() }
+        swipeRefreshLayout.setOnRefreshListener {
+            appListViewModel.refreshData(swipeRefreshLayout)
+        }
         swipeRefreshLayout.post {
             swipeRefreshLayout.isRefreshing = true
-            refreshData()
-        }
-    }
-
-    private fun refreshData() {
-        ThreadPoolUtils.instance?.execute {
-            val list = getAppListInfo(requireContext())
-            mainHandler.post {
-                swipeRefreshLayout.isRefreshing = false
-                adapter.updateData(list)
-            }
+            appListViewModel.refreshData(swipeRefreshLayout)
         }
     }
 
